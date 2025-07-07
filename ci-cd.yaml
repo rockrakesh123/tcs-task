@@ -8,9 +8,9 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     env:
-      JFROG_REGISTRY: docker.mycompany.jfrog.io
+      JFROG_REGISTRY: mycompany.jfrog.io          # ✅ Use actual JFrog URL
       IMAGE_NAME: simple-gradle-app
-      JFROG_REPO: my-docker-repo
+      JFROG_REPO: my-docker-repo                  # ✅ Your Docker virtual repo name
       JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
       JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
 
@@ -24,14 +24,21 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Gradle
-      
+        uses: gradle/gradle-build-action@v2
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build 
+
       - name: Log in to JFrog Docker registry
         run: echo "${JFROG_PASSWORD}" | docker login $JFROG_REGISTRY -u "${JFROG_USERNAME}" --password-stdin
 
       - name: Build Docker image
         run: |
-         docker build -t $JFROG_REGISTRY/$JFROG_REPO/$IMAGE_NAME:latest .
+          docker build -t $JFROG_REGISTRY/$JFROG_REPO/$IMAGE_NAME:latest .
 
       - name: Push Docker image to JFrog
         run: |
-         docker push $JFROG_REGISTRY/$JFROG_REPO/$IMAGE_NAME:latest 
+          docker push $JFROG_REGISTRY/$JFROG_REPO/$IMAGE_NAME:latest
