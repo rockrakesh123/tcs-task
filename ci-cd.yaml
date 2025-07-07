@@ -15,6 +15,7 @@ jobs:
       JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
 
     steps:
+      - name: checkout Code
       - uses: actions/checkout@v4
 
       - name: Setup Java
