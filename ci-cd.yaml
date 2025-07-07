@@ -10,7 +10,7 @@ jobs:
     env:
       JFROG_REGISTRY: mycompany.jfrog.io          # ✅ Use actual JFrog URL
       IMAGE_NAME: simple-gradle-app
-      JFROG_REPO: my-docker-repo                  # ✅ Your Docker virtual repo name
+      JFROG_REPO: my-docker-repo                  # ✅ Your Docker virtual repo
       JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
       JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
 
